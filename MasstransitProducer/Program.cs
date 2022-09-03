@@ -22,7 +22,7 @@ namespace MasstransitProducer
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                    //.UseUrls("http://localhost:5003/")
+                    .UseUrls("http://localhost:5003/")
                     ;
                 });
     }

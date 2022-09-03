@@ -46,13 +46,17 @@ namespace MasstransitProducer
 
         private void RegisterDirectExchange(IRabbitMqBusFactoryConfigurator cfg)
         {
-            cfg.Send<Order>(x => x.UseRoutingKeyFormatter(conntext => "order-key"));
-            cfg.Message<Order>(p => p.SetEntityName("order-exchange"));
-            cfg.Publish<Order>(p => p.ExchangeType = ExchangeType.Direct);
+            //cfg.Send<Order>(x => x.UseRoutingKeyFormatter(conntext => "order-key"));
+            ////cfg.Message<Order>(p => p.SetEntityName("order-exchange"));
+            //cfg.Publish<Order>(p => p.ExchangeType = ExchangeType.Fanout);
 
             cfg.Send<OrderCreate>(x => x.UseRoutingKeyFormatter(conntext => "order-create-key"));
             cfg.Message<OrderCreate>(p => p.SetEntityName("order-exchange"));
             cfg.Publish<OrderCreate>(p => p.ExchangeType = ExchangeType.Direct);
+
+            cfg.Send<OrderTiki>(x => x.UseRoutingKeyFormatter(conntext => "tikiorder-create-key"));
+            cfg.Message<OrderTiki>(p => p.SetEntityName("order-exchange"));
+            cfg.Publish<OrderTiki>(p => p.ExchangeType = ExchangeType.Direct);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

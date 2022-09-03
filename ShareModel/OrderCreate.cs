@@ -8,4 +8,10 @@ namespace ShareModel
     {
         public string OrderName { get; set; }
     }
+
+    public class OrderTiki
+    {
+        public string OrderName { get; set; }
+        public string Source { get; set; } = "Tiki";
+    }
 }

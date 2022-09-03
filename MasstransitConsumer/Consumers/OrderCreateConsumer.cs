@@ -19,4 +19,17 @@ namespace MasstransitConsumer.Consumers
             Console.WriteLine(x.OrderName);
         }
     }
+
+    public class OrderTikiCreateConsumer : IConsumer<OrderTiki>
+    {
+        public OrderTikiCreateConsumer()
+        {
+
+        }
+        public async Task Consume(ConsumeContext<OrderTiki> context)
+        {
+            var x = context.Message;
+            Console.WriteLine(x.OrderName);
+        }
+    }
 }

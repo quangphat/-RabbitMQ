@@ -11,17 +11,17 @@ namespace MasstransitProducer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<OrderController> _logger;
         private readonly IBus _bus;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IBus bus)
+        public OrderController(ILogger<OrderController> logger, IBus bus)
         {
             _logger = logger;
             _bus = bus;
@@ -51,6 +51,17 @@ namespace MasstransitProducer.Controllers
             await _bus.Publish(new OrderCreate
             {
                 OrderName = $"create-order-{id}"
+            });
+            return Ok();
+        }
+
+        [HttpPost("tiki")]
+        public async Task<IActionResult> CreateTikiOrder()
+        {
+            await _bus.Publish(new OrderTiki
+            {
+                OrderName = $"create-order-{Guid.NewGuid()}",
+
             });
             return Ok();
         }

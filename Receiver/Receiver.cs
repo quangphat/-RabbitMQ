@@ -33,7 +33,7 @@ namespace Receiver
                 channel.ExchangeDeclare(exchange: "direct_logs2", type: ExchangeType.Topic);
 
                 var queueName = channel.QueueDeclare().QueueName;
-
+                Console.WriteLine( "QueName: " + queueName);
                 if(args.Length<1)
                 {
                     Console.Error.WriteLine("Usage: {0} [info] [warning] [error]",

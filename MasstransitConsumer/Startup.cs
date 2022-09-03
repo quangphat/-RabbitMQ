@@ -50,6 +50,11 @@ namespace MasstransitConsumer
                 ep.PrefetchCount = 16;
                 ep.Consumer<OrderConsumer>();
             });
+            cfg.ReceiveEndpoint("get-order2", ep =>
+            {
+                ep.PrefetchCount = 16;
+                ep.Consumer<OrderConsumer2>();
+            });
 
             cfg.ReceiveEndpoint("create-order", ep =>
             {
@@ -61,27 +66,41 @@ namespace MasstransitConsumer
 
         private void RegisterDirectExchange(IRabbitMqBusFactoryConfigurator cfg)
         {
-            cfg.ReceiveEndpoint("order-queue", e =>
-            {
-                e.ConfigureConsumeTopology = false;
-                e.Consumer<OrderConsumer>();
-                e.Bind("order-exchange", p =>
-                {
-                    p.ExchangeType = ExchangeType.Direct;
-                    p.RoutingKey = "order-key";
-                });
-            });
+            //cfg.ReceiveEndpoint("order-queue", e =>
+            //{
+            //    e.Durable = true;
+            //    e.ConfigureConsumeTopology = false;
+            //    e.Consumer<OrderCreateConsumer>();
+            //    e.Bind("order-exchange", p =>
+            //    {
+            //        p.ExchangeType = ExchangeType.Direct;
+            //        p.RoutingKey = "order-key";
+            //    });
+            //});
 
             cfg.ReceiveEndpoint("order-create-queue", e =>
             {
-                e.ConfigureConsumeTopology = false;
+                //e.ConfigureConsumeTopology = false;
                 e.Consumer<OrderCreateConsumer>();
+                e.Consumer<OrderTikiCreateConsumer>();
                 e.Bind("order-exchange", p =>
                 {
                     p.ExchangeType = ExchangeType.Direct;
                     p.RoutingKey = "order-create-key";
+                    p.RoutingKey = "tikiorder-create-key";
                 });
             });
+
+            //cfg.ReceiveEndpoint("order-create-queue", e =>
+            //{
+            //    e.ConfigureConsumeTopology = false;
+            //    e.Consumer<OrderTikiCreateConsumer>();
+            //    e.Bind("order-exchange", p =>
+            //    {
+            //        p.ExchangeType = ExchangeType.Direct;
+            //        p.RoutingKey = "tikiorder-create-key";
+            //    });
+            //});
         }
         public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
